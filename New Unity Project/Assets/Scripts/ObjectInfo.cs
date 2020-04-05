@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class ObjectInfo : MonoBehaviour
 {
     public bool isSelected = false;
-
+    public bool isBusy = false;
     public string objectName;
 
     private NavMeshAgent agent;
@@ -33,7 +33,7 @@ public class ObjectInfo : MonoBehaviour
 
         if(Physics.Raycast(ray, out hit, 100))
         {
-            if(hit.collider.tag == "Ground")
+            if(hit.collider.tag == "Ground" && !isBusy)
             {
                 agent.destination = hit.point;
                 Debug.Log("Moving");

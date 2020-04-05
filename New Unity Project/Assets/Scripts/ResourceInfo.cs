@@ -8,17 +8,17 @@ public class ResourceInfo : MonoBehaviour
     float harvestTime = 10f;
 
     public bool beingGathered;
-
+    GameObject builder;
     // Start is called before the first frame update
     void Start()
     {
-        
+        builder = GameObject.Find("Rednose");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     IEnumerator Gathering()
@@ -26,7 +26,7 @@ public class ResourceInfo : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(1);
-            Debug.Log("Got some resources");
+            Debug.Log("Got some resources resourse left: "+resourceAvailable);
             ResourceGather();
         }
 
@@ -41,16 +41,17 @@ public class ResourceInfo : MonoBehaviour
             {
                 Debug.Log("Destroyed Node");
                 Destroy(gameObject);
+                builder.GetComponent<ObjectInfo>().isBusy = false;
             }
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.name == "Rednose")
-        {
-            Debug.Log("Collision Detected");
-            StartCoroutine("Gathering");
-        }
+    public void beginGathering()
+    {      
+        Debug.Log("Start gathering");
+        StartCoroutine("Gathering");
+        beingGathered = true;
+        builder.GetComponent<ObjectInfo>().isSelected = false;
+        builder.GetComponent<ObjectInfo>().isBusy = true;
     }
 }
