@@ -11,6 +11,16 @@ public class ObjectInfo : MonoBehaviour
 
     private NavMeshAgent agent;
 
+    int maxHealth = 100;
+    int health;
+
+    int attackPower = 10;
+    float attackSpeed = 1f;
+    float attackRange = 1f;
+
+    float distToTarget;
+    GameObject attackTarget;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +33,16 @@ public class ObjectInfo : MonoBehaviour
         if(Input.GetMouseButtonDown(1) && isSelected)
         {
             RightClick();
+        }
+
+
+        if (attackTarget != null)
+        {
+            distToTarget = Vector3.Distance(gameObject.transform.position, attackTarget.transform.position);
+            if(distToTarget < attackRange)
+            {
+                agent.destination = gameObject.transform.position;
+            }
         }
     }
 
@@ -37,6 +57,11 @@ public class ObjectInfo : MonoBehaviour
             {
                 agent.destination = hit.point;
                 Debug.Log("Moving");
+            }
+            else if(hit.collider.tag == "Enemy")
+            {
+                attackTarget = hit.collider.gameObject;
+                agent.destination = attackTarget.transform.position;
             }
         }
     }
