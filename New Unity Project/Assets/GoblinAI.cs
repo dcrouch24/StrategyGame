@@ -13,6 +13,7 @@ public class GoblinAI : MonoBehaviour
     void Start()
     {
         agent = gameObject.GetComponent<NavMeshAgent>();
+        target = GameObject.Find("Rednose");
     }
 
     // Update is called once per frame

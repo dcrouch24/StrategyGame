@@ -9,6 +9,10 @@ public class ResourceInfo : MonoBehaviour
 
     public bool beingGathered;
     GameObject builder;
+
+    public GameObject spawner;
+    public GameObject enemy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +32,15 @@ public class ResourceInfo : MonoBehaviour
             yield return new WaitForSeconds(1);
             Debug.Log("Got some resources resourse left: "+resourceAvailable);
             ResourceGather();
+            StartCoroutine("SpawnEnemies");
         }
 
+    }
+
+    IEnumerator SpawnEnemies()
+    {
+        Instantiate(enemy, spawner.transform);
+        yield return new WaitForSeconds(2);
     }
 
     public void ResourceGather()
