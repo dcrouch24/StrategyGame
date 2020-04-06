@@ -49,8 +49,15 @@ public class ResourceInfo : MonoBehaviour
     {
         if(collision.gameObject.name == "Rednose")
         {
+            beingGathered = true;
             Debug.Log("Collision Detected");
             StartCoroutine("Gathering");
         }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        beingGathered = false;
+        Debug.Log("Left Gathering");
     }
 }
