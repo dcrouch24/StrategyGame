@@ -47,7 +47,7 @@ public class ResourceInfo : MonoBehaviour
     }
 
     public void beginGathering()
-    {      
+    {
         Debug.Log("Start gathering");
         StartCoroutine("Gathering");
         beingGathered = true;
