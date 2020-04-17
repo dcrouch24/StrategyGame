@@ -7,8 +7,11 @@ public class CameraController : MonoBehaviour
     public float panSpeed;
     private float panDetect = 15f;
 
-    public GameObject selectedObject;
+    public List<GameObject> selectedObjects = new List<GameObject>();
+    public int selectedObjectsAmount = 0;
     private ObjectInfo selectedInfo;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -74,19 +77,47 @@ public class CameraController : MonoBehaviour
             
             if(hit.collider.tag == "Ground")
             {
-                if (selectedObject != null) selectedInfo.isSelected = false;
-                selectedObject = null;                
+                if (selectedObjectsAmount != 0)
+                {
+                    for (int i = 0; i < selectedObjects.Count; i++)
+                    {
+                        selectedInfo = selectedObjects[i].GetComponent<ObjectInfo>();
+                        selectedInfo.isSelected = false;
+                        selectedInfo.selectCircle.enabled = false;
+                    }
+                }
+                selectedObjects.Clear();               
                 Debug.Log("Deselected");
             }
             else if(hit.collider.tag == "Selectable")
             {
-                selectedObject = hit.collider.gameObject;
-                selectedInfo = selectedObject.GetComponent<ObjectInfo>();
+                if(selectedObjects.Contains(hit.collider.gameObject))
+                {
+                    return;
+                }
+                
+                selectedObjects.Add(hit.collider.gameObject);
+                selectedInfo = hit.collider.gameObject.GetComponent<ObjectInfo>();
+                selectedObjectsAmount++;
 
                 selectedInfo.isSelected = true;
+                selectedInfo.selectCircle.enabled = true;
                 Debug.Log("Unit Selected");
 
             }
         }
+    }
+
+    private bool findObject(GameObject[] objectList, GameObject target)
+    {
+        for(int i = 0; i < selectedObjectsAmount; i++)
+        {
+            if(objectList[i] == target)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
