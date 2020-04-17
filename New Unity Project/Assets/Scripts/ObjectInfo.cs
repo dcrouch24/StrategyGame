@@ -8,6 +8,7 @@ public class ObjectInfo : MonoBehaviour
     public bool isSelected = false;
     public bool isBusy = false;
     public string objectName;
+    public MeshRenderer selectCircle;
 
     private NavMeshAgent agent;
 
@@ -15,7 +16,9 @@ public class ObjectInfo : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-    }
+        selectCircle = gameObject.transform.GetChild(1).GetComponent<MeshRenderer>();
+        selectCircle.enabled = false;
+}
 
     // Update is called once per frame
     void Update()
