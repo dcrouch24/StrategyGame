@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceInfo : MonoBehaviour
 {
     int resourceAvailable = 100;
     float harvestTime = 10f;
-
     public bool beingGathered;
     GameObject builder;
-
+    [SerializeField] public Slider progress;
+    [SerializeField] private Canvas progressMap;
+    public Slider slideObj;
     public GameObject spawner;
     public GameObject enemy;
 
@@ -31,6 +33,7 @@ public class ResourceInfo : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             Debug.Log("Got some resources resourse left: "+resourceAvailable);
+            slideObj.value += .1f;
             ResourceGather();
             StartCoroutine("SpawnEnemies");
         }
@@ -39,7 +42,7 @@ public class ResourceInfo : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        Instantiate(enemy, spawner.transform);
+        //Instantiate(enemy, spawner.transform);
         yield return new WaitForSeconds(2);
     }
 
@@ -50,6 +53,7 @@ public class ResourceInfo : MonoBehaviour
             resourceAvailable -= 10;
             if(resourceAvailable <= 0)
             {
+                Destroy(slideObj);
                 Debug.Log("Destroyed Node");
                 Destroy(gameObject);
                 builder.GetComponent<ObjectInfo>().isBusy = false;
@@ -59,6 +63,8 @@ public class ResourceInfo : MonoBehaviour
 
     public void beginGathering()
     {
+        slideObj = Instantiate(progress, transform.position+new Vector3(0,5,0), progress.transform.rotation, progressMap.transform);
+        slideObj.value = 0;
         Debug.Log("Start gathering");
         StartCoroutine("Gathering");
         beingGathered = true;
