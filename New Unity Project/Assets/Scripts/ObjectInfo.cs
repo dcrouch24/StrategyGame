@@ -16,7 +16,6 @@ public class ObjectInfo : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        selectCircle = gameObject.transform.GetChild(1).GetComponent<MeshRenderer>();
         selectCircle.enabled = false;
 }
 

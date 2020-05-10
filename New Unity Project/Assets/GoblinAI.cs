@@ -7,19 +7,27 @@ using UnityEngine.AI;
 public class GoblinAI : MonoBehaviour
 {
     NavMeshAgent agent;
-    public GameObject target;
+    public Transform target = null;
+
+    public float lookRadius = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
-        agent = gameObject.GetComponent<NavMeshAgent>();
-        target = GameObject.Find("Rednose");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        agent.destination = target.transform.position;
+        if (target != null)
+        {
+            float distance = Vector3.Distance(target.position, transform.position);
+            if (distance <= lookRadius)
+            {
+                agent.SetDestination(target.position);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -40,5 +48,11 @@ public class GoblinAI : MonoBehaviour
 #endif
             Application.Quit();
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 }
